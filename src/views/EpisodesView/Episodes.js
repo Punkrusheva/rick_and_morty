@@ -1,31 +1,41 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Layout from '../../components/MainLayout/MainLayout';
 import { connect } from "react-redux";
-import ContactList from '../../components/ContactList/ContactList'
+//import CharactersList from '../../components/CharactersList/CharactersList'
 import Filter from '../../components/Filter/Filter';
 import "../../stylesheets/animation.css";
 import { ToastContainer } from "react-toastify";
-import { charactersOperations } from "../../redux/characters";
+import {
+  charactersSelectors,
+  //charactersActions,
+  charactersOperations } from "../../redux/characters";
 
-class Episodes extends Component {
+import { //useDispatch,
+  useSelector
+} from "react-redux";
+
+
+function Episodes () {
   /*componentDidMount() {
     this.props.fetchCharacter();
   }*/
+  
+  const value = useSelector(charactersSelectors.getFilter);
 
-  render() {
     return (
       <Layout >
-        <Filter />
+        <Filter value={value} placeholder='Set name' onChange=''/>
         
         <ToastContainer autoClose={2500} />     
-        <ContactList />
       </Layout>
     );
   };
-};
 
 const mapDispatchToProps = dispatch => ({
 fetchCharacter: () => dispatch(charactersOperations.fetchCharacter())
 })
 
-export default connect( null, mapDispatchToProps )(Episodes);
+export default connect(null, mapDispatchToProps)(Episodes);
+
+/**
+        <CharactersList /> */

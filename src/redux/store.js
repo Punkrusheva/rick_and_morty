@@ -1,7 +1,7 @@
 import { configureStore, getDefaultMiddleware} from "@reduxjs/toolkit";
-import { phoneBookReducer } from "./phoneBook";
 import { authReducer } from "./auth";
 import { charactersReducer } from "./characters";
+import { toDoReducer } from "./toDoList";
 import {
     persistStore,
     persistReducer,
@@ -31,8 +31,8 @@ const authPersistConfig = {
 const store = configureStore({
     reducer: {
         auth: persistReducer(authPersistConfig ,authReducer),
-        contacts: phoneBookReducer,
         characters: charactersReducer,
+        toDos: toDoReducer,
     },
     middleware,
     devTools: process.env.NODE_ENV === 'development',
@@ -41,9 +41,9 @@ const store = configureStore({
 const persistor = persistStore(store);
 
 export default { store, persistor };
-/*import { configureStore, getDefaultMiddleware} from "@reduxjs/toolkit";
-import logger from "redux-logger";
-import { phoneBookReducer } from "./phoneBook/index";
+
+/*import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { charactersReducer } from "./characters";
 import {
     persistStore,
     FLUSH,
@@ -60,16 +60,16 @@ const middleware = [
             ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
         }
     }),
-    logger,
 ];
 
 const store = configureStore({
-    reducer: { contacts:  phoneBookReducer },
+    reducer: {
+        characters: charactersReducer
+    },
     middleware,
     devTools: process.env.NODE_ENV === 'development',
 });
 
 const persistor = persistStore(store);
 
-const storeList = { store, persistor };
-export default storeList;*/
+export default { store, persistor };*/

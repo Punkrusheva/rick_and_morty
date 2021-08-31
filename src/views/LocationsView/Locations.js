@@ -1,33 +1,42 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Layout from '../../components/MainLayout/MainLayout';
 import { connect } from "react-redux";
-import ContactList from '../../components/ContactList/ContactList'
+//import CharactersList from '../../components/CharactersList/CharactersList'
 import Filter from '../../components/Filter/Filter';
 import "../../stylesheets/animation.css";
 import { ToastContainer } from "react-toastify";
-import { charactersOperations } from "../../redux/characters";
+import {
+  //useDispatch,
+  useSelector
+} from "react-redux";
+import {
+  charactersSelectors,
+  //charactersActions,
+  charactersOperations
+} from "../../redux/characters";
 
-class Locations extends Component {
+function Locations () {
   /*componentDidMount() {
     this.props.fetchCharacters();
   }*/
-
-  render() {
+ const value = useSelector(charactersSelectors.getFilter);
+ 
     return (
       <Layout >
-        <Filter />
-        <Filter />
-        <Filter />
+        <Filter value={value} placeholder='Set name' onChange='' />
+        <Filter value={value} placeholder='Set type' onChange='' />
+        <Filter value={value} placeholder='Set dimension' onChange=''/>
         
-        <ToastContainer autoClose={2500} />     
-        <ContactList />
+        <ToastContainer autoClose={2500} />    
       </Layout>
     );
   };
-};
 
 const mapDispatchToProps = dispatch => ({
 fetchCharacters: () => dispatch(charactersOperations.fetchCharacters())
 })
 
-export default connect( null, mapDispatchToProps )(Locations);
+export default connect(null, mapDispatchToProps)(Locations);
+
+/** 
+        <CharactersList /> */

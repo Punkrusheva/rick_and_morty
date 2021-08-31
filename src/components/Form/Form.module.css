@@ -8,7 +8,8 @@
   padding: 5px;
   margin-bottom: 10px;
 }
-label {
+
+.toDo {
   font-size: 14px;
   font-weight: 500;
   display: flex;

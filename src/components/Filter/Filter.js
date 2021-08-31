@@ -21,13 +21,14 @@ export default function Filter() {
       />
     </label>
   )
-};
-*/
+};*/
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './Filter.module.css';
 
-function Layout(value, placeholder, onChange) {
+
+function Filter({ value, placeholder, onChange }) {
   return (
     <label className={styles.label}>
       <input
@@ -42,14 +43,14 @@ function Layout(value, placeholder, onChange) {
   )
 }
 
-Layout.defaultProps = {
+Filter.defaultProps = {
   value: '',
 };
 
-Layout.propTypes = {
+Filter.propTypes = {
   value: PropTypes.string,
   placeholder: PropTypes.string.isRequired,
 };
 
 
-export default Layout; 
+export default Filter; 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Layout from '../../components/MainLayout/MainLayout';
 import { connect } from "react-redux";
-import ContactList from '../../components/ContactList/ContactList';
+//import ContactList from '../../components/ContactList/ContactList';
 import Form from '../../components/Form/Form';
 //import Filter from '../../components/Filter/Filter';
 import "../../stylesheets/animation.css";
@@ -17,8 +17,8 @@ class MyWatchList extends Component {
     return (
       <Layout >
         <Form/>
-        <ToastContainer autoClose={2500} />     
-        <ContactList />
+        
+        <ToastContainer autoClose={2500} />    
       </Layout>
     );
   };
@@ -28,4 +28,7 @@ const mapDispatchToProps = dispatch => ({
 fetchCharacters: () => dispatch(charactersOperations.fetchCharacters())
 })
 
-export default connect( null, mapDispatchToProps )(MyWatchList);
+export default connect(null, mapDispatchToProps)(MyWatchList);
+
+/** 
+        <ContactList /> */

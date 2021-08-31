@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Layout from '../../components/MainLayout/MainLayout';
 import { useDispatch } from "react-redux";
-import ContactList from '../../components/ContactList/ContactList';
+import ContactList from '../../components/CharactersList/CharactersList';
 import Form from '../../components/Form/Form';
 import Filter from '../../components/Filter/Filter';
 import "../../stylesheets/animation.css";

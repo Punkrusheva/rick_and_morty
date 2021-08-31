@@ -8,9 +8,9 @@ import store from "./redux/store";
 import './stylesheets/main.css';
 import './stylesheets/normalize.css';
 
-ReactDOM.render(
+  ReactDOM.render(
     <Provider store={store.store}>
-      <PersistGate loading={null} persistor={store.persistor}>
+      <PersistGate loading={null} persistor={store.persistor}> 
         <BrowserRouter>
           <App />
         </BrowserRouter>

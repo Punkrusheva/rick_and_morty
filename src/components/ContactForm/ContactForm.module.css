@@ -1,5 +1,5 @@
 .box {
-  width: auto;
+  width: 100%;
   font-size: 13px;
   display: flex;
   flex-direction: column;
@@ -7,7 +7,6 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   padding: 5px;
   margin-bottom: 10px;
-  align-items: center;
 }
 label {
   font-size: 14px;
@@ -22,7 +21,7 @@ label {
   font-weight: 300;
   margin-bottom: 5px;
   margin-top: 5px;
-  width: 300px;
+  width: 100%;
   height: 25px;
   padding: 2px;
   border: 1px solid gray;
@@ -36,10 +35,8 @@ label {
 }
 
 .button {
-  width: 100px;
+  width: 100%;
   height: 25px;
-  margin-top: 15px;
-  margin-bottom: 15px;
   border: 1px solid blue;
   background: blue;
   border-radius: 5px;

@@ -1,8 +1,6 @@
-import {
-    useState
-} from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { contactsOperations, contactsSelectors } from "../../redux/phoneBook";
+import { toDoOperations, toDoSelectors } from "../../redux/toDoList";
 //import { contactsOperations, contactsSelectors } from "../../redux/phoneBook";
 import shortid from 'shortid';
 import styles from './Form.module.css';
@@ -10,35 +8,24 @@ import { CSSTransition } from "react-transition-group";
 import "../../stylesheets/animation.css";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-/*
-const mapStateToProps = state => ({ contacts: contactsSelectors.getVisibleContacts(state)});
-
-const mapDispatchToProps = dispatch => ({
-  onSubmit: (name, number) => { dispatch(contactsOperations.addContact(name, number)) },
-});*/
 
 export default function Form() {
   const dispatch = useDispatch();
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [toDo, setToDo] = useState('');
   
-  const nameInputId = shortid.generate();
+  const toDoInputId = shortid.generate();
 
-  const contacts = useSelector(contactsSelectors.getVisibleContacts);
-  //const onSubmit = () => { dispatch(contactsOperations.addContact())};
+  const toDos = useSelector(toDoSelectors.getVisibleToDos);
+  //const onSubmit = () => { dispatch(toDoOperations.addToDo())};
   
   const handleChange = e => {
-    const { name, value } = e.target;
+    const { toDo, value } = e.target;
 
-    switch (name) {
-      case 'name':
-        setName(value);
+    switch (toDo) {
+      case 'toDo':
+        setToDo(value);
         break;
-      
-      case 'number':
-        setNumber(value);
-        break;
-      
+            
       default:
         return toast.error('');;
     }
@@ -46,21 +33,20 @@ export default function Form() {
   
   const handleSubmit = e => {
     e.preventDefault();
-    if (name === '') {toast.error('Contact details empty')
+    if (toDo === '') {toast.error('ToDo empty')
     }
-    if (contacts.find(contact => name === contact.name)) {
-        toast.error('Contact is already exist');
+    if (toDos.find(toDo => toDo === toDo.name)) {
+        toast.error('ToDo is already exist');
     } 
     else {
-      
-      dispatch(contactsOperations.addContact({name, number}));
+      //onSubmit();
+      dispatch(toDoOperations.addContact({toDo}));
       };
       reset();
   };
     
   const reset = () => {
-    setName('');
-    setNumber('');
+    setToDo('');
     };
     
     return (<>
@@ -77,12 +63,12 @@ export default function Form() {
         onSubmit={handleSubmit}
         autoComplete="off">
         
-       <label htmlFor={nameInputId} className={styles.name}>
+       <label htmlFor={toDoInputId} className={styles.toDo}>
           <input
             type='text'
-            name='name'
-            id={nameInputId}
-            value={name}
+            name='toDo'
+            id={toDoInputId}
+            value={toDo}
             onChange={handleChange}
             className={styles.input}
             placeholder='Enter your message' />

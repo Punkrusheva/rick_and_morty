@@ -3,20 +3,16 @@ import React, {
   lazy,
   //useEffect
 } from "react";
-import Layout from "./Layout/Layout";
 import { Switch, Route, Redirect } from "react-router-dom";
-import routes from "../routes";
-import Load from "./Loader/Loader";
-/*import {
-  authOperations,
-  authSelectors
-} from "../redux/auth";*/
 import {
  // useDispatch,
   useSelector
 } from 'react-redux';
 import { ToastContainer } from "react-toastify";
-import { contactsSelectors } from "../redux/phoneBook";
+import { charactersSelectors } from "../redux/characters";
+import Layout from "./Layout/Layout";
+import routes from "../routes";
+import Load from "./Loader/Loader";
 import Notification from '../components/Notification/Notification';
 
 const Characters = lazy(() => import('../views/CharactersView/Characters.js' /*webpackChunkName: 'characters' */));
@@ -39,8 +35,8 @@ export default function App() {
    }, [dispatch]);*/
   
   //const isLoadingAuth= useSelector(authSelectors.getAuthLoading);
-  const isLoadingContacts= useSelector(contactsSelectors.getLoading);
-  const errorContacts= useSelector(contactsSelectors.getError);
+  const isLoadingCharacters= useSelector(charactersSelectors.getLoading);
+  const errorCharacters= useSelector(charactersSelectors.getError);
     return (
       <Layout>
         <ToastContainer autoClose={2500} />
@@ -59,8 +55,8 @@ export default function App() {
             <Redirect to={routes.characters}/>
           </Switch>
         </Suspense>
-        {(isLoadingContacts) && <Load />}
-        {errorContacts && <Notification  message={`${errorContacts.message}`} />}
+        {(isLoadingCharacters) && <Load />}
+        {errorCharacters && <Notification  message={`${errorCharacters.message}`} />}
         </Layout>
     )
 };

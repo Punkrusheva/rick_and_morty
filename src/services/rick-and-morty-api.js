@@ -1,34 +1,36 @@
-import Axios from 'axios';
-
-const baseURL = 'https://rickandmortyapi.com/api';
+export default class RickAndMorty {
+  _baseURL = 'https://rickandmortyapi.com/api';
  
-const showCharacters = () => {
-    return Axios.get(`${baseURL}/character`)
-};
-const showCharactersBySpecies = (species) => {
+  async getAllCharacters(url) {
+    const res = await fetch(`${this._baseURL}/character${url}`);
+    
+    if (!res.ok) {
+      throw new Error(`Could not fetch all characters` +
+        `, received ${res.status}`);
+    }
+    return await res.json();
+  }
+  async getCharactersBySpecies(species) {
+     return await this.getAllCharacters(`/?species=${species}`)
+  }
+  async getCharactersByStatus(status) {
+     return await this.getAllCharacters(`/?status=${status}`)
+  }
+  async getCharactersByGender(gender) {
+     return await this.getAllCharacters(`/?gender=${gender}`)
+  }
+  async getCharactersById(id) {
+    return await this.getAllCharacters(`/${id}`)
+  }
+  /*showCharactersBySpecies = (species) => {
     return Axios.get(`${baseURL}/character/?species=${species}`)
-};
-const showCharactersByStatus = (status) => {
+  };
+  
+  showCharactersByStatus = (status) => {
     return Axios.get(`${baseURL}/character/?status=${status}`)
-};
-const showCharactersByGender = (gender) => {
+  };
+  showCharactersByGender = (gender) => {
     return Axios.get(`${baseURL}/character/?gender=${gender}`)
+  };
+*/
 };
-
-
-/*const showMovieDetails = (movieId) => {
-   return Axios.get(`${baseURL}/movie/${movieId}?api_key=${KEY}`);
-}
-
-const showCast = (movieId) => {
-  return Axios.get(`${baseURL}/movie/${movieId}/credits?api_key=${KEY}`);
-}
-
-const showReviews = (movieId) => {
-  return Axios.get(`${baseURL}/movie/${movieId}/reviews?api_key=${KEY}`);
-}
-const showWithQuery = (query) => {
-  return Axios.get(`${baseURL}/search/movie?api_key=${KEY}&query=${query}`);
-};*/
-
-export default { showCharacters, showCharactersBySpecies, showCharactersByStatus, showCharactersByGender};
