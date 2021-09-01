@@ -1,18 +1,18 @@
 //import axios from "axios";
-import charactersActions from "./characters-actions";
+import episodesActions from "./episodes-actions";
 
-const fetchCharacters = () => async dispatch => {
-    dispatch(charactersActions.fetchCharacterRequest());
+const fetchEpisodes = () => async dispatch => {
+    dispatch(episodesActions.fetchEpisodeRequest());
     
     try {
-        const { data } = await fetch.get('/character');
-        dispatch(charactersActions.fetchCharacterSuccess(data));
+        const { data } = await fetch.get('/episode');
+        dispatch(episodesActions.fetchEpisodeSuccess(data));
     } catch (error) {
-        dispatch(charactersActions.fetchCharacterError(error.massage));
+        dispatch(episodesActions.fetchEpisodeError(error.massage));
     }
 };
 
-export default fetchCharacters;
+export default fetchEpisodes;
 /**import axios from 'axios';
 
 export const FETCH_SOMETHING= 'FETCH_SOMETHING;

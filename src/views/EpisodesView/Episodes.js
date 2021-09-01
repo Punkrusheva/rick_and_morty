@@ -1,41 +1,66 @@
-import React from 'react';
+import { Component } from 'react';
 import Layout from '../../components/MainLayout/MainLayout';
 import { connect } from "react-redux";
-//import CharactersList from '../../components/CharactersList/CharactersList'
+import CharactersList from '../../components/CharactersList/CharactersList'
 import Filter from '../../components/Filter/Filter';
 import "../../stylesheets/animation.css";
 import { ToastContainer } from "react-toastify";
 import {
-  charactersSelectors,
+  //charactersSelectors,
   //charactersActions,
-  charactersOperations } from "../../redux/characters";
-
+  //charactersOperations 
+} from "../../redux/characters";
 import { //useDispatch,
-  useSelector
+  //useSelector
 } from "react-redux";
-
-
-function Episodes () {
-  /*componentDidMount() {
-    this.props.fetchCharacter();
-  }*/
+import {
+  getAllEpisodes,
+  /*getCharactersBySpecies,
+  getCharactersByStatus,
+  getCharactersByGender,
+  getCharactersById,
   
-  const value = useSelector(charactersSelectors.getFilter);
+  getEpisodesByName,
+  getAllLocation,
+  getLocationsByDimension,
+  getLocationsByName,
+  getLocationsByType*/
+} from '../../services/rick-and-morty-api';
+
+class Episodes extends Component {
+  state = {
+    episodes: [],
+    value: ''
+  }
+  componentDidMount() {
+    //const {characters}  = this.state;
+    getAllEpisodes()
+      .then(res => this.setState({ episodes: res.results })
+      );
+  }
+
+  render() {
+    //const value = useSelector(charactersSelectors.getFilter);
 
     return (
       <Layout >
-        <Filter value={value} placeholder='Set name' onChange=''/>
-        
-        <ToastContainer autoClose={2500} />     
+        <Filter
+          value={this.state.value}
+          placeholder='Set name'
+          onChange={() => console.log('name')} />
+        <CharactersList  characters={this.state.episodes}/>
+        <ToastContainer autoClose={2500} />
       </Layout>
     );
   };
-
-const mapDispatchToProps = dispatch => ({
+}
+const mapStateToProps = (state) => {
+  return {
+    episodes: state.episodes.items
+  }
+}
+/*const mapDispatchToProps = dispatch => ({
 fetchCharacter: () => dispatch(charactersOperations.fetchCharacter())
-})
+})*/
 
-export default connect(null, mapDispatchToProps)(Episodes);
-
-/**
-        <CharactersList /> */
+export default connect(mapStateToProps)(Episodes);

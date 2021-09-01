@@ -1,4 +1,4 @@
-export { default as toDoOperations } from './toDoList-operations';
-export { default as toDoSelectors } from './toDoList-selectors';
-export { default as toDoActions } from './toDoList-actions';
-export { default as toDoReducer } from './toDoList-reducer';
+export { default as toDosOperations } from './toDosList-operations';
+export { default as toDosSelectors } from './toDosList-selectors';
+export { default as toDosActions } from './toDosList-actions';
+export { default as toDosReducer } from './toDosList-reducer';

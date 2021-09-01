@@ -1,42 +1,64 @@
-import React from 'react';
+import { Component } from 'react';
 import Layout from '../../components/MainLayout/MainLayout';
 import { connect } from "react-redux";
-//import CharactersList from '../../components/CharactersList/CharactersList'
+import CharactersList from '../../components/CharactersList/CharactersList'
 import Filter from '../../components/Filter/Filter';
 import "../../stylesheets/animation.css";
 import { ToastContainer } from "react-toastify";
 import {
   //useDispatch,
-  useSelector
+  //useSelector
 } from "react-redux";
 import {
-  charactersSelectors,
+  //charactersSelectors,
   //charactersActions,
-  charactersOperations
+  //charactersOperations
 } from "../../redux/characters";
+import {
+  getAllLocations,
+  /*getCharactersBySpecies,
+  getCharactersByStatus,
+  getCharactersByGender,
+  getCharactersById,
+  getEpisodesByName,
+  getLocationsByDimension,
+  getLocationsByName,
+  getLocationsByType*/
+} from '../../services/rick-and-morty-api';
 
-function Locations () {
-  /*componentDidMount() {
-    this.props.fetchCharacters();
-  }*/
- const value = useSelector(charactersSelectors.getFilter);
+class Locations extends Component {
+  state = {
+    locations: [],
+    value: ''
+  }
+  componentDidMount() {
+    //const {characters}  = this.state;
+    getAllLocations()
+      .then(res => this.setState({ locations: res.results })
+      );
+  }
+
+  render() {
+    //const value = useSelector(charactersSelectors.getFilter);
  
     return (
       <Layout >
-        <Filter value={value} placeholder='Set name' onChange='' />
-        <Filter value={value} placeholder='Set type' onChange='' />
-        <Filter value={value} placeholder='Set dimension' onChange=''/>
-        
-        <ToastContainer autoClose={2500} />    
+        <Filter value={this.state.value} placeholder='Set name' onChange={() => console.log('name')} />
+        <Filter value={this.state.value} placeholder='Set type' onChange={() => console.log('type')} />
+        <Filter value={this.state.value} placeholder='Set dimension' onChange={() => console.log('dimension')} />
+        <CharactersList  characters={this.state.locations}/>
+        <ToastContainer autoClose={2500} />
       </Layout>
     );
   };
-
-const mapDispatchToProps = dispatch => ({
+}
+const mapStateToProps = (state) => {
+  return {
+    locations: state.locations.items
+  }
+}
+/*const mapDispatchToProps = dispatch => ({
 fetchCharacters: () => dispatch(charactersOperations.fetchCharacters())
-})
+})*/
 
-export default connect(null, mapDispatchToProps)(Locations);
-
-/** 
-        <CharactersList /> */
+export default connect(mapStateToProps)(Locations);

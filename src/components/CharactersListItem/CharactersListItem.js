@@ -12,21 +12,25 @@ function CharactersListItem({ name, id, status, species, gender, onClick, image 
       <p className={styles.status}><b>Status:</b> {status}</p>
       <p className={styles.species}><b>Species:</b> {species}</p>
     </li>
-        
     </>
   );
 };    
 
 CharactersListItem.defaultProps = {
-  number: '',
+  status: '',
   name: '',
-  id: null,
+  species: '',
+  gender: '',
+  image: '',
 };
 
 CharactersListItem.propTypes = {
-  number: PropTypes.string,
+  status: PropTypes.string,
   name: PropTypes.string,
-    id: PropTypes.string.isRequired
+  id: PropTypes.number.isRequired,
+  species: PropTypes.string,
+  gender: PropTypes.string,
+  image: PropTypes.string,
 };
 
 export default CharactersListItem;

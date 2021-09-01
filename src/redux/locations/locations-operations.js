@@ -1,18 +1,18 @@
 //import axios from "axios";
-import charactersActions from "./characters-actions";
+import locationsActions from "./locations-actions";
 
-const fetchCharacters = () => async dispatch => {
-    dispatch(charactersActions.fetchCharacterRequest());
+const fetchLocations = () => async dispatch => {
+    dispatch(locationsActions.fetchLocationRequest());
     
     try {
-        const { data } = await fetch.get('/character');
-        dispatch(charactersActions.fetchCharacterSuccess(data));
+        const { data } = await fetch.get('/location');
+        dispatch(locationsActions.fetchLocationSuccess(data));
     } catch (error) {
-        dispatch(charactersActions.fetchCharacterError(error.massage));
+        dispatch(locationsActions.fetchLocationError(error.massage));
     }
 };
 
-export default fetchCharacters;
+export default fetchLocations;
 /**import axios from 'axios';
 
 export const FETCH_SOMETHING= 'FETCH_SOMETHING;

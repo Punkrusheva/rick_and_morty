@@ -42,9 +42,9 @@ const error = createReducer(null, {
     [authActions.getCurrentUserError]: () => 'Ошибка получения текущего пользователя!',
     [authActions.clearAuthError]: () => null,
 });
-/*const setError = (_, { payload }) => payload;
+//const setError = (_, { payload }) => payload;
 
-const error = createReducer(null, {
+/*const error = createReducer(null, {
     [authActions.registerError]: setError,
     [authActions.loginError]: setError,
     [authActions.logoutError]: setError,

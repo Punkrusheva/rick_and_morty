@@ -1,6 +1,4 @@
-import {
-    useState
-} from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { contactsOperations, contactsSelectors } from "../../redux/phoneBook/index";
 import shortid from 'shortid';
