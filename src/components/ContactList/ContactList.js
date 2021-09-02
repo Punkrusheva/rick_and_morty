@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import contactsOperations from "../../redux/phoneBook/phoneBook-operations";
 import PropTypes from 'prop-types';
 import styles from './ContactList.module.css';
-import ContactListItem from "../ContactListItem/ContactListItem";
+import ContactListItem from "../LocationsTableItem/LocationsTableItem";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "../../stylesheets/animation.css";
 import contactsSelectors from "../../redux/phoneBook/phoneBook-selectors";

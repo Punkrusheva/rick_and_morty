@@ -1,66 +1,58 @@
 import { Component } from 'react';
 import Layout from '../../components/MainLayout/MainLayout';
-import { connect } from "react-redux";
-import CharactersList from '../../components/CharactersList/CharactersList'
+import EpisodesTable from '../../components/EpisodesTable/EpisodesTable'
 import Filter from '../../components/Filter/Filter';
 import "../../stylesheets/animation.css";
 import { ToastContainer } from "react-toastify";
 import {
-  //charactersSelectors,
-  //charactersActions,
-  //charactersOperations 
-} from "../../redux/characters";
-import { //useDispatch,
-  //useSelector
-} from "react-redux";
-import {
   getAllEpisodes,
-  /*getCharactersBySpecies,
-  getCharactersByStatus,
-  getCharactersByGender,
-  getCharactersById,
-  
-  getEpisodesByName,
-  getAllLocation,
-  getLocationsByDimension,
-  getLocationsByName,
-  getLocationsByType*/
+  //getEpisodesByName,
+  //pagination
 } from '../../services/rick-and-morty-api';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Button from '@material-ui/core/Button';
 
 class Episodes extends Component {
   state = {
     episodes: [],
-    value: ''
+    nextPage: '',
+    prevPage: '',
+    name: ''
   }
   componentDidMount() {
-    //const {characters}  = this.state;
     getAllEpisodes()
-      .then(res => this.setState({ episodes: res.results })
-      );
+      .then(res => this.setState({
+        episodes: res.results,
+        nextPage: res.info.next,
+        prevPage: res.info.prev
+      }))
+      
   }
-
+  /*
+  onClick() {
+    pagination(this.state.nextPage)
+      .then(res => console.log(res)
+        //this.setState({ episodes: res.results, nextPage: res.info.next, prevPage: res.info.prev })
+        )
+  }*/
   render() {
-    //const value = useSelector(charactersSelectors.getFilter);
-
+    const { episodes, name, prevPage, nextPage } = this.state;
+    console.log()
     return (
       <Layout >
         <Filter
-          value={this.state.value}
+          value={name}
           placeholder='Set name'
           onChange={() => console.log('name')} />
-        <CharactersList  characters={this.state.episodes}/>
+        <EpisodesTable  episodes={episodes}/>
+        <ButtonGroup style={{ display: 'flex', justifyContent: 'center', boxShadow: 'none', margin: '10px'  }} variant="contained" color="primary" aria-label="contained primary button group">
+          {prevPage && <Button src={prevPage} onClick={() => console.log(prevPage)}>Prev</Button>}
+          {nextPage && <Button src={nextPage} onClick={() => console.log(nextPage)}>Next</Button>}
+        </ButtonGroup>
         <ToastContainer autoClose={2500} />
       </Layout>
     );
   };
 }
-const mapStateToProps = (state) => {
-  return {
-    episodes: state.episodes.items
-  }
-}
-/*const mapDispatchToProps = dispatch => ({
-fetchCharacter: () => dispatch(charactersOperations.fetchCharacter())
-})*/
 
-export default connect(mapStateToProps)(Episodes);
+export default Episodes;

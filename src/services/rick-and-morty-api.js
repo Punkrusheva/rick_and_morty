@@ -9,6 +9,7 @@ export const getAllCharacters = async () => {
   }
   return await res.json();
 };
+
 export const getCharactersBySpecies = async (species) => {
   const res = await fetch(`${baseURL}/character/?species=${species}`);
   if (!res.ok) {
@@ -94,4 +95,13 @@ export const getLocationsByDimension = async (dimension) => {
       `, received ${res.status}`);
   }
   return await res.json()
+}
+
+export const pagination = async(link) => {
+  const res = await fetch(link)
+  if (!res.ok) {
+    throw new Error(`Could not fetch all characters` +
+      `, received ${res.status}`);
+  }
+  return await res.json();
 }

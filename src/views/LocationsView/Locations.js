@@ -1,64 +1,70 @@
 import { Component } from 'react';
 import Layout from '../../components/MainLayout/MainLayout';
-import { connect } from "react-redux";
-import CharactersList from '../../components/CharactersList/CharactersList'
+import LocationsTable from '../../components/LocationsTable/LocationsTable'
 import Filter from '../../components/Filter/Filter';
 import "../../stylesheets/animation.css";
 import { ToastContainer } from "react-toastify";
 import {
-  //useDispatch,
-  //useSelector
-} from "react-redux";
-import {
-  //charactersSelectors,
-  //charactersActions,
-  //charactersOperations
-} from "../../redux/characters";
-import {
   getAllLocations,
-  /*getCharactersBySpecies,
-  getCharactersByStatus,
-  getCharactersByGender,
-  getCharactersById,
-  getEpisodesByName,
-  getLocationsByDimension,
-  getLocationsByName,
-  getLocationsByType*/
+  //getLocationsByDimension,
+  //getLocationsByName,
+  //getLocationsByType,
+  //pagination
 } from '../../services/rick-and-morty-api';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Button from '@material-ui/core/Button';
 
 class Locations extends Component {
   state = {
     locations: [],
-    value: ''
+    name: '',
+    type: '',
+    dimension: '',
+    nextPage: '',
+    prevPage: '',
   }
   componentDidMount() {
-    //const {characters}  = this.state;
     getAllLocations()
-      .then(res => this.setState({ locations: res.results })
+      .then(res => this.setState({
+        locations: res.results,
+        nextPage: res.info.next,
+        prevPage: res.info.prev
+      })
       );
   }
-
+/*
+  onClick() {
+    pagination(this.state.nextPage)
+      .then(res => console.log(res)
+        //this.setState({ episodes: res.results, nextPage: res.info.next, prevPage: res.info.prev })
+        )
+  }*/
   render() {
-    //const value = useSelector(charactersSelectors.getFilter);
+    const { locations, name, type, dimension, prevPage, nextPage } = this.state;
  
     return (
       <Layout >
-        <Filter value={this.state.value} placeholder='Set name' onChange={() => console.log('name')} />
-        <Filter value={this.state.value} placeholder='Set type' onChange={() => console.log('type')} />
-        <Filter value={this.state.value} placeholder='Set dimension' onChange={() => console.log('dimension')} />
-        <CharactersList  characters={this.state.locations}/>
+        <Filter
+          value={name}
+          placeholder='Set name'
+          onChange={() => console.log('name')} />
+        <Filter
+          value={type}
+          placeholder='Set type'
+          onChange={() => console.log('type')} />
+        <Filter
+          value={dimension}
+          placeholder='Set dimension'
+          onChange={() => console.log('dimension')} />
+        <LocationsTable locations={locations} />
+        <ButtonGroup style={{ display: 'flex', justifyContent: 'center', boxShadow: 'none', margin: '10px' }} variant="contained" color="primary" aria-label="contained primary button group">
+          {prevPage && <Button src={prevPage} onClick={() => console.log(prevPage)}>Prev</Button>}
+          {nextPage && <Button src={nextPage} onClick={() => console.log(nextPage)}>Next</Button>}
+        </ButtonGroup>
         <ToastContainer autoClose={2500} />
       </Layout>
     );
   };
 }
-const mapStateToProps = (state) => {
-  return {
-    locations: state.locations.items
-  }
-}
-/*const mapDispatchToProps = dispatch => ({
-fetchCharacters: () => dispatch(charactersOperations.fetchCharacters())
-})*/
 
-export default connect(mapStateToProps)(Locations);
+export default Locations;

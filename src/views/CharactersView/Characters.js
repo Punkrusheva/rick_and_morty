@@ -1,67 +1,71 @@
 import { Component } from 'react';
 import Layout from '../../components/MainLayout/MainLayout';
-import { connect } from "react-redux";
 import CharactersList from '../../components/CharactersList/CharactersList';
 import Filter from '../../components/Filter/Filter';
 import "../../stylesheets/animation.css";
 import { ToastContainer } from "react-toastify";
 import {
-  //useDispatch,
-  //useSelector
-} from "react-redux";
-import {
-  //charactersSelectors,
-  //charactersActions,
-  //charactersOperations
-} from "../../redux/characters";
-import {
   getAllCharacters,
-  /*getCharactersBySpecies,
-  getCharactersByStatus,
-  getCharactersByGender,
-  getCharactersById,
-  getAllEpisodes,
-  getEpisodesByName,
-  getAllLocation,
-  getLocationsByDimension,
-  getLocationsByName,
-  getLocationsByType*/
+  //getCharactersBySpecies,
+  //getCharactersByStatus,
+  //getCharactersByGender,
+  //getCharactersById,
+  //pagination
 } from '../../services/rick-and-morty-api';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Button from '@material-ui/core/Button';
 
 class Characters extends Component {
   state = {
     characters: [],
-    value: ''
+    species: '',
+    status: '',
+    gender: '',
+    nextPage: '',
+    prevPage: '',
   }
   componentDidMount() {
-    //const {characters}  = this.state;
     getAllCharacters()
-      .then(res => this.setState({ characters: res.results })
+      .then(res => this.setState({
+        characters: res.results,
+        nextPage: res.info.next,
+        prevPage: res.info.prev
+      })
       );
   }
-
-  //const value = useSelector(charactersSelectors.getFilter);
-  // console.log(value);
+/*
+  onClick() {
+    pagination(this.state.nextPage)
+      .then(res => console.log(res)
+        //this.setState({ episodes: res.results, nextPage: res.info.next, prevPage: res.info.prev })
+        )
+  }*/
   render() {
+    const { characters, species, status, gender, prevPage, nextPage } = this.state;
+    
     return (
       <Layout >
-        <Filter value={this.state.value} placeholder='Set species' onChange={() => console.log('species')} />
-        <Filter value={this.state.value} placeholder='Set status' onChange={() => console.log('status')} />
-        <Filter value={this.state.value} placeholder='Set gender' onChange={() => console.log('gender')} />
-        <CharactersList characters={this.state.characters}/>
+        <Filter
+          value={species}
+          placeholder='Set species'
+          onChange={() => console.log('species')} />
+        <Filter
+          value={status}
+          placeholder='Set status'
+          onChange={() => console.log('status')} />
+        <Filter
+          value={gender}
+          placeholder='Set gender'
+          onChange={() => console.log('gender')} />
+        <CharactersList characters={characters} />
+        <ButtonGroup style={{ display: 'flex', justifyContent: 'center', boxShadow: 'none', margin: '10px'  }} variant="contained" color="primary" aria-label="contained primary button group">
+          {prevPage && <Button src={prevPage} onClick={() => console.log(prevPage)}>Prev</Button>}
+          {nextPage && <Button src={nextPage} onClick={() => console.log(nextPage)}>Next</Button>}
+        </ButtonGroup> 
         <ToastContainer autoClose={2500} />
       </Layout>
     );
   };
 }
-const mapStateToProps = (state) => {
-  return {
-    characters: state.characters.items
-  }
-}
-/*const mapDispatchToProps = dispatch => ({
-fetchCharacters: () => dispatch(charactersOperations.fetchCharacters())
-})*/
 
-/**onClick={() => dispatch(charactersOperations.deleteContact(id))} */
-export default connect(mapStateToProps)(Characters);
+export default Characters;

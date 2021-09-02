@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import Layout from '../../components/MainLayout/MainLayout';
-import { connect } from "react-redux";
-//import ContactList from '../../components/ContactList/ContactList';
+//import LocationsTable from '../../components/LocationsTable/LocationsTable';
 import Form from '../../components/Form/Form';
-//import Filter from '../../components/Filter/Filter';
 import "../../stylesheets/animation.css";
 import { ToastContainer } from "react-toastify";
-import { charactersOperations } from "../../redux/characters";
 
 class MyWatchList extends Component {
   /*componentDidMount() {
@@ -17,18 +14,12 @@ class MyWatchList extends Component {
     return (
       <Layout >
         <Form/>
-        
         <ToastContainer autoClose={2500} />    
       </Layout>
     );
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-fetchCharacters: () => dispatch(charactersOperations.fetchCharacters())
-})
-
-export default connect(null, mapDispatchToProps)(MyWatchList);
-
-/** 
-        <ContactList /> */
+export default MyWatchList;
+/**
+        <LocationsTable /> */
