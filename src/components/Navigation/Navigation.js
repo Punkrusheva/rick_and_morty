@@ -2,11 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './Navigation.module.css';
 import routes from "../../routes";
-//import { useSelector } from 'react-redux';
-//import { authSelectors } from '../../redux/auth';
 
 export default function Navigation() {
-  //const isAuthenticated = useSelector(authSelectors.getIsAuthenticated);
 
   return (
   <ul className={styles.navMenu}>

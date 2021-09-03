@@ -4,10 +4,16 @@ import LocationsTableItem from "../LocationsTableItem/LocationsTableItem";
 import "../../stylesheets/animation.css";
 
 function LocationsTable({locations}) {
-  console.log(locations);
   return (<>
+    
     <ul className={styles.locationsTable}>
-    {locations.map(({ name, id, dimension, type }) => (
+      <LocationsTableItem
+        name="Name"
+        id={123}
+        dimension="Dimension"
+        type="Type">
+      </LocationsTableItem>
+      {locations.map(({ name, id, dimension, type }) => (
       <LocationsTableItem
         name={name}
         key={id}

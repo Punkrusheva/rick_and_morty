@@ -1,25 +1,85 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import Layout from '../../components/MainLayout/MainLayout';
-//import LocationsTable from '../../components/LocationsTable/LocationsTable';
 import Form from '../../components/Form/Form';
-import "../../stylesheets/animation.css";
+import '../../stylesheets/animation.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
+import Logo from '../../components/Logo/Logo';
+import WatchList from '../../components/WatchList/WatchList';
+import shortid from 'shortid';
 
-class MyWatchList extends Component {
-  /*componentDidMount() {
-    this.props.fetchCharacters();
-  }*/
+export default class MyWatchList extends Component {
+  state = {
+    toDos: [],
+  }
 
-  render() {
-    return (
-      <Layout >
-        <Form/>
-        <ToastContainer autoClose={2500} />    
-      </Layout>
-    );
+  componentDidMount() {
+    const toDos = localStorage.getItem('toDos');
+    const parsedToDos = JSON.parse(toDos);
+    if (parsedToDos) {
+      this.setState({ toDos: parsedToDos });
+    }
   };
-};
+  
+  componentDidUpdate(prevState) {
+    if (this.state.toDos !== prevState.toDos) {
+      localStorage.setItem('toDos', JSON.stringify(this.state.toDos));
+    }
+  };
 
-export default MyWatchList;
-/**
-        <LocationsTable /> */
+  handleChange = e => {
+    e.preventDefault();
+    const { toDoText, value } = e.currentTarget;
+    this.setState({ [toDoText]: value });
+    this.props.onChange(this.state);
+  };
+  
+  formSubmitHandler = ({ toDoText }) => {
+    localStorage.getItem('toDos');
+    this.toDoId = shortid.generate();
+    const toDo = {
+      id: this.toDoId,
+      toDoText,
+    };
+    if (toDo.name !== '') {
+      if (this.state.toDos.find(toDo => toDo.toDoText === toDoText)) {
+        toast.error('ToDo is already exist');
+      }
+      else {
+        this.setState(prevState => {
+          return {
+            toDos: [toDo, ...prevState.toDos],
+          }
+        });
+      };
+    } else {
+      toast.error('ToDo details empty');
+    };
+  }
+
+  removeToDo = toDoId => {
+    this.setState(prevState => {
+      return {
+        toDos: prevState.toDos.filter(({ id }) => id !== toDoId),
+      };
+    });
+  };
+  
+  render() {
+    const { toDos } = this.state;
+    return (
+        <Layout >
+          <Logo text='My watch list' />
+          <Form onSubmit={this.formSubmitHandler} />
+        
+          {toDos.length > 0 &&
+          <WatchList
+              onRemoveToDo={this.removeToDo}
+              toDos={toDos} />
+          }
+          <ToastContainer autoClose={2000} />
+        </Layout>
+      );
+    };
+  };

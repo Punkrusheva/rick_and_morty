@@ -2,23 +2,25 @@ import { Component } from 'react';
 import Layout from '../../components/MainLayout/MainLayout';
 import EpisodesTable from '../../components/EpisodesTable/EpisodesTable'
 import Filter from '../../components/Filter/Filter';
-import "../../stylesheets/animation.css";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
+import Logo from '../../components/Logo/Logo';
+import PaginationGroup from '../../components/PaginationGroup/PaginationGroup';
 import {
   getAllEpisodes,
-  //getEpisodesByName,
-  //pagination
+  getEpisodesByName,
+  pagination
 } from '../../services/rick-and-morty-api';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import Button from '@material-ui/core/Button';
 
 class Episodes extends Component {
   state = {
     episodes: [],
+    filter: '',
     nextPage: '',
     prevPage: '',
-    name: ''
   }
+
   componentDidMount() {
     getAllEpisodes()
       .then(res => this.setState({
@@ -28,27 +30,52 @@ class Episodes extends Component {
       }))
       
   }
-  /*
-  onClick() {
-    pagination(this.state.nextPage)
-      .then(res => console.log(res)
-        //this.setState({ episodes: res.results, nextPage: res.info.next, prevPage: res.info.prev })
-        )
-  }*/
+
+  changeFilter = e => {
+    this.setState({ filter: e.currentTarget.value });
+  };
+    
+  componentDidUpdate(prevProps, prevState) {
+    const { filter, nextPage, prevPage } = this.state;
+    if (prevState.filter !== filter) {
+      getEpisodesByName(filter)
+      .then(res => {
+        if (res.results !== prevState.episodes) {
+          this.setState({
+            episodes: res.results,
+            nextPage: res.info.next,
+            prevPage: res.info.prev
+          })
+        } else { 
+            toast.error('Nothing found')}
+      })
+    }
+   /* if (nextPage !== prevState.nextPage || prevPage !== prevState.prevPage) {
+      pagination(nextPage)
+      .then(res => {
+        if (res.info.next !== prevState.nextPage) {
+          console.log(res.info.next);
+          this.setState({
+            episodes: res.results,
+            nextPage: res.info.next,
+            prevPage: res.info.prev
+          })
+        };
+      })*/
+  }
+  
   render() {
-    const { episodes, name, prevPage, nextPage } = this.state;
-    console.log()
+    const {episodes, filter, prevPage, nextPage } = this.state;
+
     return (
       <Layout >
+        <Logo text='Episodes'/>
         <Filter
-          value={name}
+          value={filter}
           placeholder='Set name'
-          onChange={() => console.log('name')} />
-        <EpisodesTable  episodes={episodes}/>
-        <ButtonGroup style={{ display: 'flex', justifyContent: 'center', boxShadow: 'none', margin: '10px'  }} variant="contained" color="primary" aria-label="contained primary button group">
-          {prevPage && <Button src={prevPage} onClick={() => console.log(prevPage)}>Prev</Button>}
-          {nextPage && <Button src={nextPage} onClick={() => console.log(nextPage)}>Next</Button>}
-        </ButtonGroup>
+          onChange={this.changeFilter} />
+        <EpisodesTable episodes={episodes} />
+        <PaginationGroup onClickPrev={prevPage} onClickNext={nextPage}/>
         <ToastContainer autoClose={2500} />
       </Layout>
     );

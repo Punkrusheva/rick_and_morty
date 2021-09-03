@@ -30,7 +30,7 @@ CharactersList.defaultProps = {
 
 CharactersList.propTypes = {
   characters: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     status: PropTypes.string,
     name: PropTypes.string,
     gender: PropTypes.string,

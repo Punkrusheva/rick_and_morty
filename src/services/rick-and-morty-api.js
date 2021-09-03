@@ -10,6 +10,17 @@ export const getAllCharacters = async () => {
   return await res.json();
 };
 
+export const getFilteredCharacters = async (filterSpecies, filterStatus, filterGender) => {
+  const res = await fetch(`${baseURL}/character/?species=${filterSpecies}&status=${filterStatus}&gender=${filterGender}`);
+  if (!res.ok) {
+    throw new Error(`Could not fetch characters by filter` +
+      `, received ${res.status}`);
+  }
+  if (res.results === 0) {throw new Error(`Ничего не найдено` +
+      `, received ${res.status}`);}
+  return await res.json()
+};
+/*
 export const getCharactersBySpecies = async (species) => {
   const res = await fetch(`${baseURL}/character/?species=${species}`);
   if (!res.ok) {
@@ -33,7 +44,7 @@ export const getCharactersByGender = async (gender) => {
       `, received ${res.status}`);
   }
   return await res.json()
-};
+};*/
 export const getCharactersById = async (id) => {
   const res = await fetch(`${baseURL}/character/${id}`);
   if (!res.ok) {
@@ -100,7 +111,7 @@ export const getLocationsByDimension = async (dimension) => {
 export const pagination = async(link) => {
   const res = await fetch(link)
   if (!res.ok) {
-    throw new Error(`Could not fetch all characters` +
+    throw new Error(`Could not fetch` +
       `, received ${res.status}`);
   }
   return await res.json();

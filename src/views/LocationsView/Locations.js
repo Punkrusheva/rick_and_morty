@@ -4,6 +4,8 @@ import LocationsTable from '../../components/LocationsTable/LocationsTable'
 import Filter from '../../components/Filter/Filter';
 import "../../stylesheets/animation.css";
 import { ToastContainer } from "react-toastify";
+import Logo from '../../components/Logo/Logo';
+import PaginationGroup from '../../components/PaginationGroup/PaginationGroup';
 import {
   getAllLocations,
   //getLocationsByDimension,
@@ -11,8 +13,6 @@ import {
   //getLocationsByType,
   //pagination
 } from '../../services/rick-and-morty-api';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import Button from '@material-ui/core/Button';
 
 class Locations extends Component {
   state = {
@@ -44,6 +44,7 @@ class Locations extends Component {
  
     return (
       <Layout >
+        <Logo text='Locations'/>
         <Filter
           value={name}
           placeholder='Set name'
@@ -57,10 +58,7 @@ class Locations extends Component {
           placeholder='Set dimension'
           onChange={() => console.log('dimension')} />
         <LocationsTable locations={locations} />
-        <ButtonGroup style={{ display: 'flex', justifyContent: 'center', boxShadow: 'none', margin: '10px' }} variant="contained" color="primary" aria-label="contained primary button group">
-          {prevPage && <Button src={prevPage} onClick={() => console.log(prevPage)}>Prev</Button>}
-          {nextPage && <Button src={nextPage} onClick={() => console.log(nextPage)}>Next</Button>}
-        </ButtonGroup>
+        <PaginationGroup prevPage={prevPage} nextPage={nextPage} onClickPrev={() => console.log(prevPage)} onClickNext={() => console.log(nextPage)}/>
         <ToastContainer autoClose={2500} />
       </Layout>
     );

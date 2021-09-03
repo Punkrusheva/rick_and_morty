@@ -7,7 +7,6 @@ function LocationsTableItem({ name, id, dimension, type }) {
             <p className={styles.name}>{name}</p>
             <p className={styles.dimension}>{dimension}</p>
             <p className={styles.type}>{type}</p>
-            
           </li>
         
     </>

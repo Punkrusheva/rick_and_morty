@@ -6,18 +6,23 @@ import "../../stylesheets/animation.css";
 function EpisodesTable({ episodes }) {
 
   return (<>
-      <ul className={styles.episodesTable}>
+    <ul className={styles.episodesTable}>
+      <EpisodesTableItem
+        name="Name"
+        id={123}
+        episode="Episode"
+        air_date="Air date">
+      </EpisodesTableItem>
       {episodes.map(({ name, id, air_date, episode }) => (
-        <EpisodesTableItem
-          name={name}
-          key={id}
-          id={id}
-          episode={episode}
-          air_date={air_date}
-          onClick={() => console.log('Клик!')}>
-              </EpisodesTableItem>
-          ))
-          }
+      <EpisodesTableItem
+        name={name}
+        key={id}
+        id={id}
+        episode={episode}
+        air_date={air_date}>
+      </EpisodesTableItem>
+      ))
+      }
       </ul>
     </>
     );

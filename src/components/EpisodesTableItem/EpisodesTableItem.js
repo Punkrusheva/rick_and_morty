@@ -7,7 +7,6 @@ function EpisodesTableItem({ name, id, air_date, episode}) {
       <p className={styles.name}>{name}</p>
       <p className={styles.episode}>{episode}</p>
       <p className={styles.air_date}>{air_date}</p>
-      
     </li>   
     </>
   );
