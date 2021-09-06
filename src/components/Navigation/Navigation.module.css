@@ -1,5 +1,6 @@
 .navMenu {
   display: flex;
+  flex-wrap: wrap;
   list-style: none;
   width: 400px;
   justify-content: space-between;

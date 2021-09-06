@@ -9,9 +9,6 @@ import Logo from '../../components/Logo/Logo';
 import PaginationGroup from '../../components/PaginationGroup/PaginationGroup';
 import {
   getAllCharacters,
-  //getCharactersBySpecies,
-  //getCharactersByStatus,
-  //getCharactersByGender,
   //getCharactersById,
   //pagination,
   getFilteredCharacters
@@ -25,8 +22,6 @@ class Characters extends Component {
     filterGender: '',
     nextPage: '',
     prevPage: '',
-    alert: false,
-    alertText: '',
   }
 
   componentDidMount() {
@@ -39,7 +34,7 @@ class Characters extends Component {
       );
   }
 
-  changeSpeciesFilter = e => {
+  changeSpeciesFilter = e => {console.log(e.currentTarget.value);
     this.setState({ filterSpecies: e.currentTarget.value });
   };
   changeStatusFilter = e => {
@@ -49,41 +44,31 @@ class Characters extends Component {
     this.setState({ filterGender: e.currentTarget.value });
   };
     
-  componentDidUpdate(prevState) {
-    const { filterSpecies, filterStatus, filterGender } = this.state;
-    if (prevState.filterSpecies !== filterSpecies &&
-      prevState.filterStatus !== filterStatus &&
-      prevState.filterGender !== filterGender) {
-      getFilteredCharacters(filterSpecies, filterStatus, filterGender)
-        .then(res => {console.log(res.results);
-          if (res.results.lenth > null) {
+  componentDidUpdate(prevProps, prevState) {
+    const { filterSpecies,
+      filterStatus, filterGender
+    } = this.state;
+    if (prevProps.filterSpecies !== filterSpecies
+      && prevProps.filterStatus !== filterStatus
+      && prevProps.filterGender !== filterGender
+    ) {
+      getFilteredCharacters(filterSpecies, filterStatus, filterGender
+      )
+        .then(res => {
             if (res.results !== prevState.characters) {
-              
               this.setState({
                 characters: res.results,
                 nextPage: res.info.next,
                 prevPage: res.info.prev
               })
-            } else { }
-            toast.error('Nothing found');
-          }
-        });
+            } else {toast.error('Nothing found')}
+          });
     }
   }
-  /*getVisibleCharacters = () => {
-    const { characters, filterSpecies, filterStatus, filterGender } = this.state;
-    
-    const normalizedSpeciesFilter = filterSpecies.toLowerCase().trim();
-    return characters.filter(character =>
-      character.species.toLowerCase().includes(normalizedSpeciesFilter)
-    );
-  };*/
 
   render() {
     const { characters, filterSpecies, filterStatus, filterGender, prevPage, nextPage } = this.state;
-    //const visibleCharacters = this.getVisibleCharacters();
-    console.log(filterSpecies, filterStatus, filterGender);
-    console.log(characters);
+
     return (
       <Layout >
         <Logo text='Characters'/>
@@ -102,7 +87,11 @@ class Characters extends Component {
         {characters.length > 0 &&
           <CharactersList characters={characters} />
         }
-        <PaginationGroup prevPage={prevPage} nextPage={nextPage} onClickPrev={() => console.log(prevPage)} onClickNext={() => console.log(nextPage)}/> 
+        <PaginationGroup
+          prevPage={prevPage}
+          nextPage={nextPage}
+          onClickPrev={() => console.log(prevPage)}
+          onClickNext={() => console.log(nextPage)} />
         <ToastContainer autoClose={2500} />
       </Layout>
     );

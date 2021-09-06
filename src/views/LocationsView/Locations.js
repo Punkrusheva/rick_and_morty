@@ -3,62 +3,98 @@ import Layout from '../../components/MainLayout/MainLayout';
 import LocationsTable from '../../components/LocationsTable/LocationsTable'
 import Filter from '../../components/Filter/Filter';
 import "../../stylesheets/animation.css";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import Logo from '../../components/Logo/Logo';
 import PaginationGroup from '../../components/PaginationGroup/PaginationGroup';
 import {
   getAllLocations,
-  //getLocationsByDimension,
-  //getLocationsByName,
-  //getLocationsByType,
+  getFilteredLocations,
   //pagination
 } from '../../services/rick-and-morty-api';
 
 class Locations extends Component {
   state = {
     locations: [],
-    name: '',
-    type: '',
-    dimension: '',
+    filterName: '',
+    filterType: '',
+    filterDimension: '',
     nextPage: '',
     prevPage: '',
   }
+
   componentDidMount() {
     getAllLocations()
-      .then(res => this.setState({
-        locations: res.results,
-        nextPage: res.info.next,
-        prevPage: res.info.prev
-      })
+      .then(res => {this.setState({
+          locations: res.results,
+          nextPage: res.info.next,
+          prevPage: res.info.prev
+        })
+      }
       );
   }
-/*
-  onClick() {
-    pagination(this.state.nextPage)
-      .then(res => console.log(res)
-        //this.setState({ episodes: res.results, nextPage: res.info.next, prevPage: res.info.prev })
-        )
-  }*/
+changeNameFilter = e => {
+    this.setState({ filterName: e.currentTarget.value });
+  };
+  changeTypeFilter = e => {
+    this.setState({ filterType: e.currentTarget.value });
+  };
+  changeDimensionFilter = e => {
+    this.setState({ filterDimension: e.currentTarget.value });
+  };
+    
+  componentDidUpdate(prevState) {
+    const { filterName, 
+      filterType, filterDimension
+    } = this.state;
+    if (prevState.filterName !== filterName
+     || prevState.filterType !== filterType
+     || prevState.filterDimension !== filterDimension
+    ) {
+      getFilteredLocations(filterName, 
+        filterType,
+        filterDimension
+      )
+        .then(res => {console.log(res.results);
+            if (res.results !== prevState.locations) {
+              this.setState({
+                locations: res.results,
+                nextPage: res.info.next,
+                prevPage: res.info.prev
+              })
+            } else {toast.error('Nothing found')}
+          });
+    }
+  }
+  pagination = e => {
+    console.log(e);
+  };
   render() {
-    const { locations, name, type, dimension, prevPage, nextPage } = this.state;
- 
+    const { locations, filterName, filterType, filterDimension, prevPage, nextPage } = this.state;
+    console.log(filterName, filterType, filterDimension);
+    
     return (
       <Layout >
         <Logo text='Locations'/>
         <Filter
-          value={name}
+          value={filterName}
           placeholder='Set name'
-          onChange={() => console.log('name')} />
+          onChange={this.changeNameFilter} />
         <Filter
-          value={type}
+          value={filterType}
           placeholder='Set type'
-          onChange={() => console.log('type')} />
+          onChange={this.changeTypeFilter} />
         <Filter
-          value={dimension}
+          value={filterDimension}
           placeholder='Set dimension'
-          onChange={() => console.log('dimension')} />
+          onChange={this.changeDimensionFilter} />
         <LocationsTable locations={locations} />
-        <PaginationGroup prevPage={prevPage} nextPage={nextPage} onClickPrev={() => console.log(prevPage)} onClickNext={() => console.log(nextPage)}/>
+        <PaginationGroup
+          prevPage={prevPage}
+          nextPage={nextPage}
+          onClickPrev={console.log(prevPage)}
+          onClickNext={console.log(nextPage)} />
         <ToastContainer autoClose={2500} />
       </Layout>
     );

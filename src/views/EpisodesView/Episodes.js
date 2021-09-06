@@ -10,7 +10,7 @@ import PaginationGroup from '../../components/PaginationGroup/PaginationGroup';
 import {
   getAllEpisodes,
   getEpisodesByName,
-  pagination
+  //pagination
 } from '../../services/rick-and-morty-api';
 
 class Episodes extends Component {
@@ -28,15 +28,16 @@ class Episodes extends Component {
         nextPage: res.info.next,
         prevPage: res.info.prev
       }))
-      
   }
 
   changeFilter = e => {
     this.setState({ filter: e.currentTarget.value });
   };
     
-  componentDidUpdate(prevProps, prevState) {
-    const { filter, nextPage, prevPage } = this.state;
+  componentDidUpdate(prevState) {
+    const { filter,
+      //nextPage, prevPage
+    } = this.state;
     if (prevState.filter !== filter) {
       getEpisodesByName(filter)
       .then(res => {
@@ -46,8 +47,7 @@ class Episodes extends Component {
             nextPage: res.info.next,
             prevPage: res.info.prev
           })
-        } else { 
-            toast.error('Nothing found')}
+        } else {toast.error('Nothing found')}
       })
     }
    /* if (nextPage !== prevState.nextPage || prevPage !== prevState.prevPage) {
@@ -66,7 +66,7 @@ class Episodes extends Component {
   
   render() {
     const {episodes, filter, prevPage, nextPage } = this.state;
-
+    console.log(episodes);
     return (
       <Layout >
         <Logo text='Episodes'/>
@@ -75,7 +75,11 @@ class Episodes extends Component {
           placeholder='Set name'
           onChange={this.changeFilter} />
         <EpisodesTable episodes={episodes} />
-        <PaginationGroup onClickPrev={prevPage} onClickNext={nextPage}/>
+        <PaginationGroup
+          prevPage={prevPage}
+          nextPage={nextPage}
+          onClickPrev={prevPage}
+          onClickNext={nextPage} />
         <ToastContainer autoClose={2500} />
       </Layout>
     );

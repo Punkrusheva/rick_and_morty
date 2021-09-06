@@ -10,41 +10,18 @@ export const getAllCharacters = async () => {
   return await res.json();
 };
 
-export const getFilteredCharacters = async (filterSpecies, filterStatus, filterGender) => {
+export const getFilteredCharacters = async (filterSpecies, filterStatus, filterGender
+) => {
   const res = await fetch(`${baseURL}/character/?species=${filterSpecies}&status=${filterStatus}&gender=${filterGender}`);
   if (!res.ok) {
     throw new Error(`Could not fetch characters by filter` +
       `, received ${res.status}`);
   }
-  if (res.results === 0) {throw new Error(`Ничего не найдено` +
-      `, received ${res.status}`);}
+  /*if (res.results=== 0) {throw new Error(`There is nothing here` +
+      `, received ${res.status}`)}*/
   return await res.json()
 };
-/*
-export const getCharactersBySpecies = async (species) => {
-  const res = await fetch(`${baseURL}/character/?species=${species}`);
-  if (!res.ok) {
-    throw new Error(`Could not fetch characters by species` +
-      `, received ${res.status}`);
-  }
-  return await res.json()
-};
-export const getCharactersByStatus = async (status) => {
- const res = await fetch(`${baseURL}/character/?status=${status}`);
-  if (!res.ok) {
-    throw new Error(`Could not fetch characters by status` +
-      `, received ${res.status}`);
-  }
-  return await res.json()
-};
-export const getCharactersByGender = async (gender) => {
-  const res = await fetch(`${baseURL}/character/?gender=${gender}`);
-  if (!res.ok) {
-    throw new Error(`Could not fetch characters by gender` +
-      `, received ${res.status}`);
-  }
-  return await res.json()
-};*/
+
 export const getCharactersById = async (id) => {
   const res = await fetch(`${baseURL}/character/${id}`);
   if (!res.ok) {
@@ -83,30 +60,18 @@ export const getAllLocations = async () => {
   }
   return await res.json();
 };
-export const getLocationsByName = async (name) => {
-  const res = await fetch(`${baseURL}/location/?name=${name}`);
+
+export const getFilteredLocations = async (filterName, filterType, filterDimension
+) => {
+  const res = await fetch(`${baseURL}/location/?name=${filterName}&type=${filterType}&dimension=${filterDimension}`);
   if (!res.ok) {
-    throw new Error(`Could not fetch location by name` +
+    throw new Error(`Could not fetch location by filter` +
       `, received ${res.status}`);
   }
+  /*if (res.results=== 0) {throw new Error(`There is nothing here` +
+      `, received ${res.status}`)}*/
   return await res.json()
-}
-export const getLocationsByType = async (type) => {
-  const res = await fetch(`${baseURL}/location/?type=${type}`);
-  if (!res.ok) {
-    throw new Error(`Could not fetch location by type` +
-      `, received ${res.status}`);
-  }
-  return await res.json()
-}
-export const getLocationsByDimension = async (dimension) => {
-  const res = await fetch(`${baseURL}/location/?dimension=${dimension}`);
-  if (!res.ok) {
-    throw new Error(`Could not fetch location by dimension` +
-      `, received ${res.status}`);
-  }
-  return await res.json()
-}
+};
 
 export const pagination = async(link) => {
   const res = await fetch(link)

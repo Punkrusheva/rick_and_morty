@@ -1,6 +1,6 @@
 .item {
   list-style-type: none;
-  width: 32%;
+  width: calc(100%/3 - 10px);
   height: auto;
   margin: 0;
   margin-bottom: 3px;
