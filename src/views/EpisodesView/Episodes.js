@@ -4,7 +4,6 @@ import EpisodesTable from '../../components/EpisodesTable/EpisodesTable'
 import Filter from '../../components/Filter/Filter';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-//import { ToastContainer } from "react-toastify";
 import Logo from '../../components/Logo/Logo';
 import PaginationGroup from '../../components/PaginationGroup/PaginationGroup';
 import {
@@ -92,5 +91,3 @@ class Episodes extends Component {
 }
 
 export default Episodes;
-/**
-        <ToastContainer autoClose={2500} /> */

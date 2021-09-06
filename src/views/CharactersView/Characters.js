@@ -4,13 +4,12 @@ import CharactersList from '../../components/CharactersList/CharactersList';
 import Filter from '../../components/Filter/Filter';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from "react-toastify";
 import Logo from '../../components/Logo/Logo';
 import PaginationGroup from '../../components/PaginationGroup/PaginationGroup';
 import {
   getAllCharacters,
   //getCharactersById,
-  pagination,
+  //pagination,
   getFilteredCharacters
 } from '../../services/rick-and-morty-api';
 
