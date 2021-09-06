@@ -4,7 +4,7 @@ import EpisodesTable from '../../components/EpisodesTable/EpisodesTable'
 import Filter from '../../components/Filter/Filter';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from "react-toastify";
+//import { ToastContainer } from "react-toastify";
 import Logo from '../../components/Logo/Logo';
 import PaginationGroup from '../../components/PaginationGroup/PaginationGroup';
 import {
@@ -23,11 +23,16 @@ class Episodes extends Component {
 
   componentDidMount() {
     getAllEpisodes()
-      .then(res => this.setState({
-        episodes: res.results,
-        nextPage: res.info.next,
-        prevPage: res.info.prev
-      }))
+      .then(res => {
+        if (res.results) {
+          this.setState({
+            episodes: res.results,
+            nextPage: res.info.next,
+            prevPage: res.info.prev
+          })
+        } else { toast.error('Nothing found') }
+      }
+    );
   }
 
   changeFilter = e => {
@@ -40,29 +45,30 @@ class Episodes extends Component {
     } = this.state;
     if (prevState.filter !== filter) {
       getEpisodesByName(filter)
-      .then(res => {
-        if (res.results !== prevState.episodes) {
-          this.setState({
-            episodes: res.results,
-            nextPage: res.info.next,
-            prevPage: res.info.prev
-          })
-        } else {toast.error('Nothing found')}
-      })
+        .then(res => {
+          if (res.results !== prevState.episodes) {
+            this.setState({
+              episodes: res.results,
+              nextPage: res.info.next,
+              prevPage: res.info.prev
+            })
+          } else { toast.error('Nothing found') }
+        })
     }
    /* if (nextPage !== prevState.nextPage || prevPage !== prevState.prevPage) {
-      pagination(nextPage)
-      .then(res => {
-        if (res.info.next !== prevState.nextPage) {
-          console.log(res.info.next);
-          this.setState({
-            episodes: res.results,
-            nextPage: res.info.next,
-            prevPage: res.info.prev
-          })
-        };
-      })*/
-  }
+      pagination(link)
+        .then(res => {
+          if (res.info.next !== prevState.nextPage) {
+            console.log(res.info.next);
+            this.setState({
+              episodes: res.results,
+              nextPage: res.info.next,
+              prevPage: res.info.prev
+            })
+          };
+        })*/
+    };
+  
   
   render() {
     const {episodes, filter, prevPage, nextPage } = this.state;
@@ -80,10 +86,11 @@ class Episodes extends Component {
           nextPage={nextPage}
           onClickPrev={prevPage}
           onClickNext={nextPage} />
-        <ToastContainer autoClose={2500} />
       </Layout>
     );
   };
 }
 
 export default Episodes;
+/**
+        <ToastContainer autoClose={2500} /> */

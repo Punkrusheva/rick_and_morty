@@ -5,7 +5,6 @@ import Filter from '../../components/Filter/Filter';
 import "../../stylesheets/animation.css";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from "react-toastify";
 import Logo from '../../components/Logo/Logo';
 import PaginationGroup from '../../components/PaginationGroup/PaginationGroup';
 import {
@@ -95,7 +94,6 @@ changeNameFilter = e => {
           nextPage={nextPage}
           onClickPrev={console.log(prevPage)}
           onClickNext={console.log(nextPage)} />
-        <ToastContainer autoClose={2500} />
       </Layout>
     );
   };

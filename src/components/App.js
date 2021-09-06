@@ -7,7 +7,6 @@ import { ToastContainer } from "react-toastify";
 import Layout from "./Layout/Layout";
 import routes from "../routes";
 import Load from "./Loader/Loader";
-//import Notification from '../components/Notification/Notification';
 
 const Characters = lazy(() => import('../views/CharactersView/Characters.js' /*webpackChunkName: 'characters' */));
 const Episodes = lazy(() => import('../views/EpisodesView/Episodes.js' /*webpackChunkName: 'episodes' */));
@@ -15,10 +14,8 @@ const Locations = lazy(() => import('../views/LocationsView/Locations.js' /*webp
 const MyWatchList = lazy(() => import('../views/MyWatchListView/MyWatchList.js' /*webpackChunkName: 'myWatchList' */));
 
 export default function App() {
-   
-  //const isLoadingCharacters= useSelector(charactersSelectors.getLoading);
- // const errorCharacters= useSelector(charactersSelectors.getError);
-    return (
+
+  return (
       <Layout>
         <ToastContainer autoClose={2500} />
         <Suspense fallback={<Load
@@ -39,7 +36,3 @@ export default function App() {
        </Layout>
     )
 };
-
-/** {(isLoadingCharacters) && <Load />}
-        {errorCharacters && <Notification  message={`${errorCharacters.message}`} />}
-         */

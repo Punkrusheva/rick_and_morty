@@ -10,7 +10,7 @@ import PaginationGroup from '../../components/PaginationGroup/PaginationGroup';
 import {
   getAllCharacters,
   //getCharactersById,
-  //pagination,
+  pagination,
   getFilteredCharacters
 } from '../../services/rick-and-morty-api';
 
@@ -26,12 +26,16 @@ class Characters extends Component {
 
   componentDidMount() {
     getAllCharacters()
-      .then(res => this.setState({
-        characters: res.results,
-        nextPage: res.info.next,
-        prevPage: res.info.prev
-      })
-      );
+      .then(res => {
+        if (res.results) {
+          this.setState({
+            characters: res.results,
+            nextPage: res.info.next,
+            prevPage: res.info.prev
+          })
+        } else {toast.error('Nothing found')}
+      }
+    );
   }
 
   changeSpeciesFilter = e => {console.log(e.currentTarget.value);
@@ -55,6 +59,7 @@ class Characters extends Component {
       getFilteredCharacters(filterSpecies, filterStatus, filterGender
       )
         .then(res => {
+          if (res.results) {
             if (res.results !== prevState.characters) {
               this.setState({
                 characters: res.results,
@@ -62,9 +67,10 @@ class Characters extends Component {
                 prevPage: res.info.prev
               })
             } else {toast.error('Nothing found')}
-          });
+          }
+      })
     }
-  }
+  };
 
   render() {
     const { characters, filterSpecies, filterStatus, filterGender, prevPage, nextPage } = this.state;
@@ -90,9 +96,8 @@ class Characters extends Component {
         <PaginationGroup
           prevPage={prevPage}
           nextPage={nextPage}
-          onClickPrev={() => console.log(prevPage)}
-          onClickNext={() => console.log(nextPage)} />
-        <ToastContainer autoClose={2500} />
+          onClickPrev={console.log(prevPage)}
+          onClickNext={console.log(nextPage)} />
       </Layout>
     );
   };

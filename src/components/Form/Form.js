@@ -1,8 +1,7 @@
 import { Component } from 'react';
 import shortid from 'shortid';
 import styles from './Form.module.css';
-//import { toast } from 'react-toastify';
-//import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 class Form extends Component {
   state = {
@@ -19,7 +18,7 @@ class Form extends Component {
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.toDoText === '') {
-      //toast.error('ToDo empty')
+      toast.error('ToDo empty')
     }
     else {
       this.props.onSubmit(this.state);

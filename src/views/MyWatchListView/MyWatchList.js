@@ -4,7 +4,6 @@ import Form from '../../components/Form/Form';
 import '../../stylesheets/animation.css';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from "react-toastify";
 import Logo from '../../components/Logo/Logo';
 import WatchList from '../../components/WatchList/WatchList';
 import shortid from 'shortid';
@@ -72,14 +71,12 @@ export default class MyWatchList extends Component {
         <Layout >
           <Logo text='My watch list' />
           <Form onSubmit={this.formSubmitHandler} />
-        
           {toDos.length > 0 &&
           <WatchList
               onRemoveToDo={this.removeToDo}
               toDos={toDos} />
           }
-          <ToastContainer autoClose={2000} />
         </Layout>
       );
     };
-  };
+};
