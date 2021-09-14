@@ -10,7 +10,7 @@ import PaginationGroup from '../../components/PaginationGroup/PaginationGroup';
 import {
   getAllLocations,
   getFilteredLocations,
-  //pagination
+  pagination
 } from '../../services/rick-and-morty-api';
 
 class Locations extends Component {
@@ -21,7 +21,7 @@ class Locations extends Component {
     filterDimension: '',
     nextPage: '',
     prevPage: '',
-  }
+  };
 
   componentDidMount() {
     getAllLocations()
@@ -32,8 +32,9 @@ class Locations extends Component {
         })
       }
       );
-  }
-changeNameFilter = e => {
+  };
+
+  changeNameFilter = e => {
     this.setState({ filterName: e.currentTarget.value });
   };
   changeTypeFilter = e => {
@@ -43,7 +44,7 @@ changeNameFilter = e => {
     this.setState({ filterDimension: e.currentTarget.value });
   };
     
-  componentDidUpdate(prevState) {
+  componentDidUpdate(prevProps, prevState) {
     const { filterName, 
       filterType, filterDimension
     } = this.state;
@@ -51,12 +52,11 @@ changeNameFilter = e => {
      || prevState.filterType !== filterType
      || prevState.filterDimension !== filterDimension
     ) {
-      getFilteredLocations(filterName, 
-        filterType,
+      getFilteredLocations(filterName, filterType,
         filterDimension
       )
-        .then(res => {console.log(res.results);
-            if (res.results !== prevState.locations) {
+        .then(res => {
+            if (res.results) {
               this.setState({
                 locations: res.results,
                 nextPage: res.info.next,
@@ -65,14 +65,26 @@ changeNameFilter = e => {
             } else {toast.error('Nothing found')}
           });
     }
-  }
-  pagination = e => {
-    console.log(e);
   };
+    
+  onPaginationClick = link => {
+    pagination(link)
+      .then(res => {
+        if (res.results) {
+          this.setState({
+            locations: res.results,
+            nextPage: res.info.next,
+            prevPage: res.info.prev
+          });
+          window.scrollTo(0, 0)
+        } else { toast.error('Nothing found') }
+      }
+      );
+  };
+
   render() {
     const { locations, filterName, filterType, filterDimension, prevPage, nextPage } = this.state;
-    console.log(filterName, filterType, filterDimension);
-    
+
     return (
       <Layout >
         <Logo text='Locations'/>
@@ -80,23 +92,24 @@ changeNameFilter = e => {
           value={filterName}
           placeholder='Set name'
           onChange={this.changeNameFilter} />
+         <Filter
+          value={filterDimension}
+          placeholder='Set dimension'
+          onChange={this.changeDimensionFilter} />
         <Filter
           value={filterType}
           placeholder='Set type'
           onChange={this.changeTypeFilter} />
-        <Filter
-          value={filterDimension}
-          placeholder='Set dimension'
-          onChange={this.changeDimensionFilter} />
+       
         <LocationsTable locations={locations} />
         <PaginationGroup
           prevPage={prevPage}
           nextPage={nextPage}
-          onClickPrev={console.log(prevPage)}
-          onClickNext={console.log(nextPage)} />
+          onClickPrev={() => this.onPaginationClick(prevPage)}
+          onClickNext={() => this.onPaginationClick(nextPage)} />
       </Layout>
     );
   };
-}
+};
 
 export default Locations;

@@ -5,7 +5,7 @@ import MyWatchListItem from "../MyWatchListItem/MyWatchListItem";
 function WatchList({ toDos, onRemoveToDo }) {
 
   return (<>
-      <ul className={styles.toDosList}>
+    <ul className={styles.toDosList}>
       {toDos.map(({ toDoText, id }) => (
         <MyWatchListItem
           toDoText={toDoText}
@@ -15,10 +15,10 @@ function WatchList({ toDos, onRemoveToDo }) {
         </MyWatchListItem>
         ))
       }
-      </ul>
-    </>
-    );
-  }
+    </ul>
+  </>
+  );
+}
 
 WatchList.defaultProps = {
   toDos: [],

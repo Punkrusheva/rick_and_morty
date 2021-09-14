@@ -12,7 +12,6 @@ export const getFilteredCharacters = async (filterSpecies, filterStatus, filterG
 ) => {
   const res = await fetch(`${baseURL}/character/?species=${filterSpecies}&status=${filterStatus}&gender=${filterGender}`);
   
-  if (!res.ok) {toast.error('Nothing found')}
   return await res.json()
 };
 
@@ -35,7 +34,6 @@ export const getAllEpisodes = async () => {
 export const getEpisodesByName = async (name) => {
  const res = await fetch(`${baseURL}/episode/?name=${name}`);
   
-  if (!res.ok) {toast.error('Nothing found')}
   return await res.json()
 }
 
@@ -51,7 +49,6 @@ export const getFilteredLocations = async (filterName, filterType, filterDimensi
 ) => {
   const res = await fetch(`${baseURL}/location/?name=${filterName}&type=${filterType}&dimension=${filterDimension}`);
 
-  if (!res.ok) {toast.error('Nothing found')}
   return await res.json()
 };
 

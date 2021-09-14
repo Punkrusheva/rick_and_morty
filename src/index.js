@@ -6,8 +6,8 @@ import './stylesheets/main.css';
 import './stylesheets/normalize.css';
 
   ReactDOM.render(
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>,
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>,
   document.getElementById('root'),
 );

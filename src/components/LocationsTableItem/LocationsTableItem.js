@@ -2,13 +2,13 @@ import PropTypes from 'prop-types';
 import styles from './LocationsTableItem.module.css';
 
 function LocationsTableItem({ name, id, dimension, type }) {
-  return (<>
-          <li key={id} className={styles.item}>
-            <p className={styles.name}>{name}</p>
-            <p className={styles.dimension}>{dimension}</p>
-            <p className={styles.type}>{type}</p>
-          </li>
-        
+  return (
+    <>
+    <li key={id} className={styles.item}>
+      <p className={styles.name}>{name}</p>
+      <p className={styles.dimension}>{dimension}</p>
+      <p className={styles.type}>{type}</p>
+    </li>     
     </>
   );
 };    

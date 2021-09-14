@@ -9,10 +9,10 @@ function MyWatchListItem({ toDoText, id, onClick }) {
     <li key={id} className={styles.item}> 
       <p className={styles.name}><b>{toDoText}</b></p>
       <button
-              type='button'
-              onClick={onClick}
-              className={styles.button}>
-              <AiOutlineClose fill="white" />
+          type='button'
+          onClick={onClick}
+          className={styles.button}>
+          <AiOutlineClose fill="white" />
         </button>
     </li>
   );

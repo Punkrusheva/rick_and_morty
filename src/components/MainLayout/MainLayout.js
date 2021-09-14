@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './MainLayout.module.css';
 
-function Layout({ children}) {
-    return (
-      <div className={styles.layout} >
-        {children}
-      </div>)
+function Layout({ children }) {
+  return (
+    <div className={styles.layout} >
+      {children}
+    </div>)
 }
 
 Layout.defaultProps = {

@@ -9,7 +9,7 @@ import PaginationGroup from '../../components/PaginationGroup/PaginationGroup';
 import {
   getAllCharacters,
   //getCharactersById,
-  //pagination,
+  pagination,
   getFilteredCharacters
 } from '../../services/rick-and-morty-api';
 
@@ -21,7 +21,7 @@ class Characters extends Component {
     filterGender: '',
     nextPage: '',
     prevPage: '',
-  }
+  };
 
   componentDidMount() {
     getAllCharacters()
@@ -32,12 +32,12 @@ class Characters extends Component {
             nextPage: res.info.next,
             prevPage: res.info.prev
           })
-        } else {toast.error('Nothing found')}
+        } else { toast.error('Nothing found') }
       }
-    );
-  }
+    )
+  };
 
-  changeSpeciesFilter = e => {console.log(e.currentTarget.value);
+  changeSpeciesFilter = e => {
     this.setState({ filterSpecies: e.currentTarget.value });
   };
   changeStatusFilter = e => {
@@ -47,19 +47,33 @@ class Characters extends Component {
     this.setState({ filterGender: e.currentTarget.value });
   };
     
+  onPaginationClick = link => {
+    pagination(link)
+      .then(res => {
+        if (res.results) {
+          this.setState({
+            characters: res.results,
+            nextPage: res.info.next,
+            prevPage: res.info.prev
+          });
+          window.scrollTo(0, 0)
+        } else { toast.error('No data came') }
+      }
+      );
+  };
+  
   componentDidUpdate(prevProps, prevState) {
     const { filterSpecies,
       filterStatus, filterGender
     } = this.state;
-    if (prevProps.filterSpecies !== filterSpecies
-      && prevProps.filterStatus !== filterStatus
-      && prevProps.filterGender !== filterGender
+    if (prevState.filterSpecies !== filterSpecies
+      || prevState.filterStatus !== filterStatus
+      || prevState.filterGender !== filterGender
     ) {
       getFilteredCharacters(filterSpecies, filterStatus, filterGender
       )
         .then(res => {
-          if (res.results) {
-            if (res.results !== prevState.characters) {
+          if (res.results && res.results !== prevState.characters) {
               this.setState({
                 characters: res.results,
                 nextPage: res.info.next,
@@ -67,13 +81,13 @@ class Characters extends Component {
               })
             } else {toast.error('Nothing found')}
           }
-      })
+      )
     }
   };
 
   render() {
     const { characters, filterSpecies, filterStatus, filterGender, prevPage, nextPage } = this.state;
-
+    
     return (
       <Layout >
         <Logo text='Characters'/>
@@ -95,11 +109,11 @@ class Characters extends Component {
         <PaginationGroup
           prevPage={prevPage}
           nextPage={nextPage}
-          onClickPrev={console.log(prevPage)}
-          onClickNext={console.log(nextPage)} />
+          onClickPrev={() => this.onPaginationClick(prevPage)}
+          onClickNext={() => this.onPaginationClick(nextPage)} />
       </Layout>
     );
   };
-}
+};
 
 export default Characters;

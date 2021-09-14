@@ -24,7 +24,7 @@ export default function App() {
                   height={45}
                   width={45}
                   timeout={6000}
-                    />}>
+      />}>
           <Switch>
             <Route exact path={routes.characters} component={Characters}/>
             <Route exact path={routes.episodes} component={Episodes}/>

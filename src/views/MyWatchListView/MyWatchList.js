@@ -11,7 +11,7 @@ import shortid from 'shortid';
 export default class MyWatchList extends Component {
   state = {
     toDos: [],
-  }
+  };
 
   componentDidMount() {
     const toDos = localStorage.getItem('toDos');
@@ -55,7 +55,7 @@ export default class MyWatchList extends Component {
     } else {
       toast.error('ToDo details empty');
     };
-  }
+  };
 
   removeToDo = toDoId => {
     this.setState(prevState => {
@@ -67,16 +67,17 @@ export default class MyWatchList extends Component {
   
   render() {
     const { toDos } = this.state;
+    
     return (
-        <Layout >
-          <Logo text='My watch list' />
-          <Form onSubmit={this.formSubmitHandler} />
-          {toDos.length > 0 &&
+      <Layout >
+        <Logo text='My watch list' />
+        <Form onSubmit={this.formSubmitHandler} />
+        {toDos.length > 0 &&
           <WatchList
-              onRemoveToDo={this.removeToDo}
-              toDos={toDos} />
-          }
-        </Layout>
-      );
-    };
+            onRemoveToDo={this.removeToDo}
+            toDos={toDos} />
+        }
+      </Layout>
+    );
+  };
 };

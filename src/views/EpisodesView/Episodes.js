@@ -9,7 +9,7 @@ import PaginationGroup from '../../components/PaginationGroup/PaginationGroup';
 import {
   getAllEpisodes,
   getEpisodesByName,
-  //pagination
+  pagination
 } from '../../services/rick-and-morty-api';
 
 class Episodes extends Component {
@@ -31,22 +31,21 @@ class Episodes extends Component {
           })
         } else { toast.error('Nothing found') }
       }
-    );
-  }
+    )
+  };
 
   changeFilter = e => {
     this.setState({ filter: e.currentTarget.value });
   };
     
-  componentDidUpdate(prevState) {
-    const { filter,
-      //nextPage, prevPage
-    } = this.state;
+  componentDidUpdate(prevProps, prevState) {
+    const { filter } = this.state;
+
     if (prevState.filter !== filter) {
       getEpisodesByName(filter)
         .then(res => {
-          if (res.results !== prevState.episodes) {
-            this.setState({
+          if (res.results) {
+              this.setState({
               episodes: res.results,
               nextPage: res.info.next,
               prevPage: res.info.prev
@@ -54,24 +53,26 @@ class Episodes extends Component {
           } else { toast.error('Nothing found') }
         })
     }
-   /* if (nextPage !== prevState.nextPage || prevPage !== prevState.prevPage) {
-      pagination(link)
-        .then(res => {
-          if (res.info.next !== prevState.nextPage) {
-            console.log(res.info.next);
-            this.setState({
-              episodes: res.results,
-              nextPage: res.info.next,
-              prevPage: res.info.prev
-            })
-          };
-        })*/
-    };
-  
-  
+  };
+      
+  onPaginationClick = link => {
+    pagination(link)
+     .then(res => {
+        if (res.results) {
+          this.setState({
+            episodes: res.results,
+            nextPage: res.info.next,
+            prevPage: res.info.prev
+          });
+          window.scrollTo(0, 0)
+        } else {toast.error('Nothing found')}
+      }
+    );
+  }
+
   render() {
-    const {episodes, filter, prevPage, nextPage } = this.state;
-    console.log(episodes);
+    const { episodes, filter, prevPage, nextPage } = this.state;
+    
     return (
       <Layout >
         <Logo text='Episodes'/>
@@ -83,11 +84,11 @@ class Episodes extends Component {
         <PaginationGroup
           prevPage={prevPage}
           nextPage={nextPage}
-          onClickPrev={prevPage}
-          onClickNext={nextPage} />
+          onClickPrev={() => this.onPaginationClick(prevPage)}
+          onClickNext={() => this.onPaginationClick(nextPage)} />
       </Layout>
     );
   };
-}
+};
 
 export default Episodes;
