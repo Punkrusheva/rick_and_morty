@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../../components/MainLayout/MainLayout';
 import CharactersList from '../../components/CharactersList/CharactersList';
 import Filter from '../../components/Filter/Filter';
@@ -13,107 +13,84 @@ import {
   getFilteredCharacters
 } from '../../services/rick-and-morty-api';
 
-class Characters extends Component {
-  state = {
-    characters: [],
-    filterSpecies: '',
-    filterStatus: '',
-    filterGender: '',
-    nextPage: '',
-    prevPage: '',
-  };
+function Characters() {
+  const [characters, setCharacters] = useState([])
+  const [filterSpecies, setFilterSpecies] = useState('')
+  const [filterStatus, setFilterStatus] = useState('')
+  const [filterGender, setFilterGender] = useState('')
+  const [nextPage, setNextPage] = useState('')
+  const [prevPage, setPrevPage] = useState('')
 
-  componentDidMount() {
+  const changeSpeciesFilter = e => {
+    setFilterSpecies(e.currentTarget.value)
+  }
+  const changeStatusFilter = e => {
+    setFilterStatus(e.currentTarget.value)
+  }
+  const changeGenderFilter = e => {
+    setFilterGender(e.currentTarget.value)
+  }
+
+  useEffect(() => {
     getAllCharacters()
       .then(res => {
         if (res.results) {
-          this.setState({
-            characters: res.results,
-            nextPage: res.info.next,
-            prevPage: res.info.prev
-          })
+          setCharacters(res.results)
+          setNextPage(res.info.next)
+          setPrevPage(res.info.prev)
         } else { toast.error('Nothing found') }
       }
     )
-  };
-
-  changeSpeciesFilter = e => {
-    this.setState({ filterSpecies: e.currentTarget.value });
-  };
-  changeStatusFilter = e => {
-    this.setState({ filterStatus: e.currentTarget.value });
-  };
-  changeGenderFilter = e => {
-    this.setState({ filterGender: e.currentTarget.value });
-  };
     
-  onPaginationClick = link => {
+    getFilteredCharacters(filterSpecies, filterStatus, filterGender)
+        .then(res => {
+          if (res.results) {
+            setCharacters(res.results)
+            setNextPage(res.info.next)
+            setPrevPage(res.info.prev)
+          } else {toast.error('Nothing found')}
+        }
+      )
+  }, [filterSpecies, filterStatus, filterGender])
+
+  const onPaginationClick = link => {
     pagination(link)
       .then(res => {
         if (res.results) {
-          this.setState({
-            characters: res.results,
-            nextPage: res.info.next,
-            prevPage: res.info.prev
-          });
+          setCharacters(res.results)
+          setNextPage(res.info.next)
+          setPrevPage(res.info.prev)
           window.scrollTo(0, 0)
         } else { toast.error('No data came') }
       }
-      );
-  };
-  
-  componentDidUpdate(prevProps, prevState) {
-    const { filterSpecies,
-      filterStatus, filterGender
-    } = this.state;
-    if (prevState.filterSpecies !== filterSpecies
-      || prevState.filterStatus !== filterStatus
-      || prevState.filterGender !== filterGender
-    ) {
-      getFilteredCharacters(filterSpecies, filterStatus, filterGender
       )
-        .then(res => {
-          if (res.results && res.results !== prevState.characters) {
-              this.setState({
-                characters: res.results,
-                nextPage: res.info.next,
-                prevPage: res.info.prev
-              })
-            } else {toast.error('Nothing found')}
-          }
-      )
-    }
-  };
+  }
 
-  render() {
-    const { characters, filterSpecies, filterStatus, filterGender, prevPage, nextPage } = this.state;
-    
     return (
       <Layout >
         <Logo text='Characters'/>
         <Filter
           value={filterSpecies}
           placeholder='Set species'
-          onChange={this.changeSpeciesFilter} />
+          onChange={changeSpeciesFilter} />
         <Filter
           value={filterStatus}
           placeholder='Set status'
-          onChange={this.changeStatusFilter} />
+          onChange={changeStatusFilter} />
         <Filter
           value={filterGender}
           placeholder='Set gender'
-          onChange={this.changeGenderFilter} />
+          onChange={changeGenderFilter} />
         {characters.length > 0 &&
           <CharactersList characters={characters} />
         }
         <PaginationGroup
           prevPage={prevPage}
           nextPage={nextPage}
-          onClickPrev={() => this.onPaginationClick(prevPage)}
-          onClickNext={() => this.onPaginationClick(nextPage)} />
+          onClickPrev={() => onPaginationClick(prevPage)}
+          onClickNext={() => onPaginationClick(nextPage)} />
       </Layout>
-    );
-  };
-};
+    )
+  }
 
-export default Characters;
+export default Characters

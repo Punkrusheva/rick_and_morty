@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../../components/MainLayout/MainLayout';
 import LocationsTable from '../../components/LocationsTable/LocationsTable'
 import Filter from '../../components/Filter/Filter';
@@ -13,77 +13,59 @@ import {
   pagination
 } from '../../services/rick-and-morty-api';
 
-class Locations extends Component {
-  state = {
-    locations: [],
-    filterName: '',
-    filterType: '',
-    filterDimension: '',
-    nextPage: '',
-    prevPage: '',
-  };
+function Locations() {
+  const [locations, setLocations] = useState([])
+  const [filterName, setFilterName] = useState('')
+  const [filterType, setFilterType] = useState('')
+  const [filterDimension, setFilterDimension] = useState('')
+  const [nextPage, setNextPage] = useState('')
+  const [prevPage, setPrevPage] = useState('')
 
-  componentDidMount() {
-    getAllLocations()
-      .then(res => {this.setState({
-          locations: res.results,
-          nextPage: res.info.next,
-          prevPage: res.info.prev
-        })
-      }
-      );
-  };
-
-  changeNameFilter = e => {
-    this.setState({ filterName: e.currentTarget.value });
-  };
-  changeTypeFilter = e => {
-    this.setState({ filterType: e.currentTarget.value });
-  };
-  changeDimensionFilter = e => {
-    this.setState({ filterDimension: e.currentTarget.value });
-  };
+  const changeNameFilter = e => {
+    setFilterName(e.currentTarget.value)
+  }
+  const changeTypeFilter = e => {
+    setFilterType(e.currentTarget.value)
+  }
+  const changeDimensionFilter = e => {
+    setFilterDimension(e.currentTarget.value)
+  }
     
-  componentDidUpdate(prevProps, prevState) {
-    const { filterName, 
-      filterType, filterDimension
-    } = this.state;
-    if (prevState.filterName !== filterName
-     || prevState.filterType !== filterType
-     || prevState.filterDimension !== filterDimension
-    ) {
-      getFilteredLocations(filterName, filterType,
+  useEffect(() => {
+    getAllLocations()
+      .then(res => {
+        if (res.results) {
+          setLocations(res.results)
+          setNextPage(res.info.next)
+          setPrevPage(res.info.prev)
+        } else { toast.error('Nothing found') }
+      }
+      )
+    
+    getFilteredLocations(filterName, filterType,
         filterDimension
       )
         .then(res => {
             if (res.results) {
-              this.setState({
-                locations: res.results,
-                nextPage: res.info.next,
-                prevPage: res.info.prev
-              })
+              setLocations(res.results)
+              setNextPage(res.info.next)
+              setPrevPage(res.info.prev)
             } else {toast.error('Nothing found')}
           });
-    }
-  };
-    
-  onPaginationClick = link => {
+  }, [filterName, filterType, filterDimension])
+
+  const onPaginationClick = link => {
     pagination(link)
       .then(res => {
         if (res.results) {
-          this.setState({
-            locations: res.results,
-            nextPage: res.info.next,
-            prevPage: res.info.prev
-          });
+          setLocations(res.results)
+          setNextPage(res.info.next)
+          setPrevPage(res.info.prev)
           window.scrollTo(0, 0)
         } else { toast.error('Nothing found') }
       }
-      );
-  };
-
-  render() {
-    const { locations, filterName, filterType, filterDimension, prevPage, nextPage } = this.state;
+      )
+  }
 
     return (
       <Layout >
@@ -91,25 +73,24 @@ class Locations extends Component {
         <Filter
           value={filterName}
           placeholder='Set name'
-          onChange={this.changeNameFilter} />
+          onChange={changeNameFilter} />
          <Filter
           value={filterDimension}
           placeholder='Set dimension'
-          onChange={this.changeDimensionFilter} />
+          onChange={changeDimensionFilter} />
         <Filter
           value={filterType}
           placeholder='Set type'
-          onChange={this.changeTypeFilter} />
+          onChange={changeTypeFilter} />
        
         <LocationsTable locations={locations} />
         <PaginationGroup
           prevPage={prevPage}
           nextPage={nextPage}
-          onClickPrev={() => this.onPaginationClick(prevPage)}
-          onClickNext={() => this.onPaginationClick(nextPage)} />
+          onClickPrev={() => onPaginationClick(prevPage)}
+          onClickNext={() => onPaginationClick(nextPage)} />
       </Layout>
-    );
-  };
-};
+    )
+  }
 
-export default Locations;
+export default Locations

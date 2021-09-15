@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../../components/MainLayout/MainLayout';
 import EpisodesTable from '../../components/EpisodesTable/EpisodesTable'
 import Filter from '../../components/Filter/Filter';
@@ -12,83 +12,66 @@ import {
   pagination
 } from '../../services/rick-and-morty-api';
 
-class Episodes extends Component {
-  state = {
-    episodes: [],
-    filter: '',
-    nextPage: '',
-    prevPage: '',
-  }
-
-  componentDidMount() {
+function Episodes() {
+  const [episodes, setEpisodes] = useState([])
+  const [filter, setFilter] = useState('')
+  const [nextPage, setNextPage] = useState('')
+  const [prevPage, setPrevPage] = useState('')
+  
+  useEffect(() => {
     getAllEpisodes()
       .then(res => {
         if (res.results) {
-          this.setState({
-            episodes: res.results,
-            nextPage: res.info.next,
-            prevPage: res.info.prev
-          })
+          setEpisodes(res.results)
+          setNextPage(res.info.next)
+          setPrevPage(res.info.prev)
         } else { toast.error('Nothing found') }
       }
     )
-  };
-
-  changeFilter = e => {
-    this.setState({ filter: e.currentTarget.value });
-  };
     
-  componentDidUpdate(prevProps, prevState) {
-    const { filter } = this.state;
+    getEpisodesByName(filter.toLowerCase())
+      .then(res => {
+        if (res.results) {
+          setEpisodes(res.results)
+          setNextPage(res.info.next)
+          setPrevPage(res.info.prev)
+        } else { toast.error('Nothing found') }
+      }
+      )
+  }, [filter])
 
-    if (prevState.filter !== filter) {
-      getEpisodesByName(filter)
-        .then(res => {
-          if (res.results) {
-              this.setState({
-              episodes: res.results,
-              nextPage: res.info.next,
-              prevPage: res.info.prev
-            })
-          } else { toast.error('Nothing found') }
-        })
-    }
-  };
-      
-  onPaginationClick = link => {
+  const changeFilter = e => {
+    setFilter(e.currentTarget.value)
+  }
+
+  const onPaginationClick = link => {
     pagination(link)
      .then(res => {
         if (res.results) {
-          this.setState({
-            episodes: res.results,
-            nextPage: res.info.next,
-            prevPage: res.info.prev
-          });
+          setEpisodes(res.results)
+          setNextPage(res.info.next)
+          setPrevPage(res.info.prev)
           window.scrollTo(0, 0)
         } else {toast.error('Nothing found')}
-      }
-    );
+     }
+    )
   }
 
-  render() {
-    const { episodes, filter, prevPage, nextPage } = this.state;
-    
     return (
       <Layout >
         <Logo text='Episodes'/>
         <Filter
           value={filter}
           placeholder='Set name'
-          onChange={this.changeFilter} />
+          onChange={changeFilter} />
         <EpisodesTable episodes={episodes} />
         <PaginationGroup
           prevPage={prevPage}
           nextPage={nextPage}
-          onClickPrev={() => this.onPaginationClick(prevPage)}
-          onClickNext={() => this.onPaginationClick(nextPage)} />
+          onClickPrev={() => onPaginationClick(prevPage)}
+          onClickNext={() => onPaginationClick(nextPage)} />
       </Layout>
-    );
-  };
-};
+    )
+  }
 
-export default Episodes;
+export default Episodes
